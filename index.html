@@ -1,0 +1,74 @@
+<script>
+
+    function playComputer() {
+        let num = Math.floor(Math.random() * 3);
+        let arr = ["Rock", "Paper", "Scissors"];
+        return arr[num];
+    }
+
+    function askPlayer(){
+        return prompt("Rock, Paper, or Scissors?");
+    }
+
+
+    function playRound(playerSelection, computerSelection) {
+
+        let comp = computerSelection.toLowerCase();
+        let person = playerSelection.toLowerCase();
+        let rock = "rock";
+        let paper = "paper";
+        let scissors = "scissors";
+
+
+        let win = function() {
+            console.log( "You Win! " +  person +" beats " + comp);
+            return 1;
+            };
+
+        let lose = function() {
+            console.log("You Lose! " +  comp +" beats " + person);
+            return 0;
+            };
+
+        if (comp==person) {
+            console.log("its a tie");
+            return 0;     
+        }else if (person == rock) {
+            if (comp == scissors) {
+                return win();
+            } else{
+                return lose();
+            }
+        } else if (person = paper) {
+            if (comp == rock) {
+                return win();
+            } else{
+                return lose();
+            }
+        } else if  (person = scissors) {
+            if (comp == paper) {
+                return win();
+            } else{
+                return lose();
+            }
+        }else {
+            console.log("Invalid Input");
+            return 0;   
+        }
+    }
+
+
+    function game() {
+        
+        let wins = 0;
+
+        for (let x = 1; x <= 5; x++) {
+            let playerChoice = askPlayer();
+            let computerChoice = playComputer();
+            
+            wins+= playRound(playerChoice,computerChoice);
+        }
+        return "Player: " + wins + " | Computer: " + (5 - wins);
+    }
+
+</script>
