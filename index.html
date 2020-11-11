@@ -1,186 +1,41 @@
 <body>
-    <center>
         <header>
             <h1>Play Rock, Paper, Scissors!</h1>
-            <p>To play, press the buttons on the screen or the corresponding buttons on your keyboard!</p>
+            
+            <p>Mouse: Click buttons on the screen - Keyboard: Press corresponding buttons on your keyboard!</p>
         </header>
     
         <div id="topdiv"></div>
-        
-        <button class="btn btn-info" data-key="r" value="rock">Rock
-            <br>
-            <span>[R]</span>
-        </button>
-        <button  class="btn btn-info" data-key="p" value="paper">Paper
-            <br>
-            <span>[P]</span>
-        </button>
-        <button class="btn btn-info" data-key="s" value="scissors">Scissors
-            <br>
-            <span>[S]</span>
-        </button>
+        <div id="game-btns">
+            <button class="btn" data-key="r" value="rock">Rock
+                <br>
+                <span>[R]</span>
+            </button>
+            <button  class="btn" data-key="p" value="paper">Paper
+                <br>
+                <span>[P]</span>
+            </button>
+            <button class="btn" data-key="s" value="scissors">Scissors
+                <br>
+                <span>[S]</span>
+            </button>
+        </div>
+
         <div id="btmdiv"></div>
-    </center>
+
+        <footer>
+            <div>
+                <p>Build By: <a href="https://github.com/vdojnov/Rock_Paper_Scissors">Viktor Dojnov</a></p>
+                <p>Powered by:<a href="https://www.theodinproject.com/courses/foundations/lessons/rock-paper-scissors">The Odin Project</a></p>
+            </div>
+        </footer>
+        
 </body>
-<script>
-    // Functions
-    function playComputer() {
-        let num = Math.floor(Math.random() * 9);
-        let arr = ["rock", "paper", "scissors","rock", "paper", "scissors","rock", "paper", "scissors"];
-        return arr[Math.floor(num)];
-    }
 
-    function playRound(playerSelection, computerSelection) {
-
-        let comp = computerSelection
-        let person = playerSelection;
-        let rock = "rock";
-        let paper = "paper";
-        let scissors = "scissors";
+<script src="script.js"></script>
+<link rel="stylesheet" href="styles.css">
 
 
-        let win = function() {
-            console.log( "You Win! " +  person +" beats " + comp);
-            roundResult.textContent = "You Win! " +  person +" beats " + comp
-            roundResult.classList = "alert alert-success"  
-            roundResult.role = "alert"
-            wins +=1;
-            };
-
-        let lose = function() {
-            roundResult.textContent = "You Lose! " +  comp +" beats " + person
-            console.log("You Lose! " +  comp +" beats " + person);
-            roundResult.classList = "alert alert-danger"  
-            roundResult.role = "alert"
-            losses +=1;
-            };
-
-        if (comp==person) {
-            roundResult.textContent = "It's a Tie"
-            console.log("It's a Tie");
-            roundResult.classList = "alert alert-warning"  
-            roundResult.role = "alert"
-            return 0;     
-        }else if (person == rock) {
-            if (comp == scissors) {
-                return win();
-            } else{
-                return lose();
-            }
-        } else if (person == paper) {
-            if (comp == rock) {
-                return win();
-            } else{
-                return lose();
-            }
-        } else if  (person == scissors) {
-            if (comp == paper) {
-                return win();
-            } else{
-                return lose();
-            }
-        }else {
-            roundResult.textContent = "Invalid Input"
-            console.log("Invalid Input");
-            return 0;   
-        }
-    }
-
-    function reset(e) {
-        let letter = e.key;
-        if ((e.type === 'keypress') & (letter !== 'a' & letter != "A")) return
-        if (document.getElementById("resetBtn")) {
-            losses = 0;
-            wins = 0;
-            end = false;
-            score.textContent = "Player: " + wins + " | Computer: " + losses;
-            bottomDiv.removeChild(resetBtn);
-            bottomDiv.removeChild(displayResult);
-            roundResult.textContent="Begin play!"
-            roundResult.classList = "alert alert-primary"  
-            roundResult.role = "alert"
-        }
-        
-    }
-
-    function play(e) {
-        if (wins !== 5 & losses !== 5) {
-            let playerChoice;
-            if (e.type == 'click') {
-                playerChoice = this.value;
-            }else if (e.type == 'keypress'){
-                let letter = e.key.toLowerCase();
-                const key = document.querySelector(`button[data-key="${letter}"]`)
-                playerChoice = key.value;
-            }            
-            let computerChoice = playComputer();
-            playRound(playerChoice,computerChoice);
-            score.textContent = "Player: " + wins + " | Computer: " + losses;
-        }
-        if (!end & (wins == 5 | losses == 5)){
-                   
-            end = true;
-
-            if (wins > losses){
-                displayResult.textContent = "YOU WIN!"              
-            } else {
-                displayResult.textContent = "YOU LOSE!" 
-            }
-            bottomDiv.appendChild(displayResult); 
-            bottomDiv.appendChild(resetBtn);
-        }
-        
-    }   
-
-    // Define DOM elements 
-    const buttons = document.querySelectorAll('button')
-    const br = document.createElement('br')
-    const span = document.createElement('span')
-    const resetBtn = document.createElement('button')
-    const body = document.querySelector('body')
-    const score = document.createElement('p');
-    const displayResult = document.createElement('p');
-    const div = document.querySelector('#topdiv')
-    const roundResult = document.createElement('p');
-    const bottomDiv = document.querySelector('#btmdiv')
-    
-
-    // Game Logic
-    let wins = 0;
-    let losses = 0;
-    let end = false;
-    
-    buttons.forEach(button => {
-        button.addEventListener('click', play);
-    });
-
-    window.addEventListener('keypress', play)
-    console.log(bottomDiv)
-       
-    score.textContent = "Player: " + wins + " | Computer: " + losses;
-    bottomDiv.appendChild(score);
-    
-    resetBtn.textContent = "Play Again!"
-    resetBtn.appendChild(br)
-    span.textContent = "[A]"
-    resetBtn.appendChild(span)
-    resetBtn.id = 'resetBtn'
-    resetBtn.classList= "btn btn-info"
-
-    resetBtn.addEventListener('click', reset)
-    window.addEventListener('keypress', reset)
-
-    roundResult.textContent = "Begin play!"
-    div.appendChild(roundResult)
-    roundResult.classList = "alert alert-primary"  
-    roundResult.role = "alert"
-
-
-    // bottomDiv.style['display'] = 'flex';
-    // bottomDiv.style['flex-direction'] = 'column';    
-    // bottomDiv.style['justify-content'] = 'center';
-
-</script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP TEST -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script> -->
